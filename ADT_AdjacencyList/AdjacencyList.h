@@ -1,28 +1,32 @@
-#ifndef ADJACENCYLIST_H
-#define ADJACENCYLIST_H
+/*
+ * @
+ */
 
-typedef struct EdgeNode {
+#ifndef ADJACENCY_LIST_H
+#define ADJACENCY_LIST_H
+
+typedef struct edge_s {
     int dest;
     int weight;
-    struct EdgeNode *next;
-} EdgeNode;
+    struct edge_s* next;
+} edge_t;
 
-typedef struct GraphAdjList {
-    int vertexNum;
-    int edgeNum;
-    int isWeighted; // 0 for unweighted graph, 1 for weighted graph
-    EdgeNode **adjLists;
-} GraphAdjList;
+typedef struct graph_obj_s {
+    int vertex_num;
+    int edge_num;
+    int weighted; // 0 for unweighted graph, 1 for weighted graph
+    edge_t** head;
+}* graph_t;
 
 // Create a graph with n vertices
-GraphAdjList *createGraphAdjList(int n, int isWeighted);
+graph_t create_graph(const int n, const int weighted);
 // Destroy a graph
-void destroyGraphAdjList(GraphAdjList *graph);
+void destroy_graph(graph_t *graph);
 // Add an edge to the graph
-void addEdgeAdjList(GraphAdjList *graph, int u, int v, int w);
+void add_edge(graph_t graph, const int u, const int v, const int w) ;
 // Remove an edge from the graph
-void removeEdgeAdjList(GraphAdjList *graph, int u, int v);
+void remove_edge(graph_t graph, const int u, const int v);
 // Print the graph
-void printGraphAdjList(GraphAdjList *graph);
+void print_graph(graph_t graph);
 
-#endif //ADJACENCYLIST_H
+#endif //ADJACENCY_LIST_H
