@@ -3,47 +3,59 @@
 #include <stdlib.h>
 
 // Create a graph with n vertices and m edges
-GraphMatrix *createGraphMatrix(int n, int m, int isWeighted) {
-    GraphMatrix *graph = (GraphMatrix *) malloc(sizeof(GraphMatrix));
-    graph->vertexNum = n;
-    graph->edgeNum = m;
-    graph->isWeighted = isWeighted;
-    graph->adjacentMatrix = (int **) malloc(sizeof(int *) * (n + 1));
-    graph->adjacentMatrix[0] = NULL;
+graph_t create_graph(const int n, const int m, const int weighted) {
+    graph_t graph = malloc(sizeof(graph_t));
+    if (graph == NULL) return NULL;
+    graph->vertex_num = n;
+    graph->edge_num = m;
+    graph->weighted = weighted;
+    graph->matrix = (int**)malloc(sizeof(int*) * (n + 1));
+    if (graph->matrix == NULL) {
+        free(graph);
+        return NULL;
+    }
+    graph->matrix[0] = NULL;
     for (int i = 1; i <= n; ++i) {
-        graph->adjacentMatrix[i] = (int *) malloc(sizeof(int) * (n + 1));
+        graph->matrix[i] = (int*)malloc(sizeof(int) * (n + 1));
+        if (graph->matrix[i] == NULL) {
+            for (int j = 1; j <= i; ++j)
+                free(graph->matrix[j]);
+            free(graph->matrix);
+            free(graph);
+            return NULL;
+        }
         for (int j = 1; j <= n; ++j)
-            graph->adjacentMatrix[i][j] = 0;
+            graph->matrix[i][j] = 0;
     }
 
     return graph;
 }
 
 // Destroy a graph
-void destroyGraphMatrix(GraphMatrix *graph) {
-    for (int i = 1; i <= graph->vertexNum; ++i)
-        free(graph->adjacentMatrix[i]);
-    free(graph->adjacentMatrix);
-    free(graph);
+void destroy_graph(graph_t *graph) {
+    graph_t g = *graph;
+    for (int i = 1; i <= g->vertex_num; ++i)
+        free(g->matrix[i]);
+    free(g->matrix);
+    free(g);
+    *graph = NULL;
 }
 
 // Add an edge to the graph
-void addEdgeMatrix(GraphMatrix *graph, int u, int v, int w) {
-    // 检查是否为带权图
-
-    graph->adjacentMatrix[u][v] = graph->isWeighted ? w : 1;
+void add_edge(graph_t graph, const int u, const int v, const int w) {
+    graph->matrix[u][v] = graph->weighted ? w : 1;
 }
 
 // Remove an edge from the graph
-void removeEdgeMatrix(GraphMatrix *graph, int u, int v) {
-    graph->adjacentMatrix[u][v] = 0;
+void remove_edge(graph_t graph, const int u, const int v) {
+    graph->matrix[u][v] = 0;
 }
 
 // Print the graph
-void printGraphMatrix(GraphMatrix *graph) {
-    for (int i = 1; i <= graph->vertexNum; ++i) {
-        for (int j = 1; j <= graph->vertexNum; ++j)
-            printf("%d ", graph->adjacentMatrix[i][j]);
+void print_graph(graph_t graph) {
+    for (int i = 1; i <= graph->vertex_num; ++i) {
+        for (int j = 1; j <= graph->vertex_num; ++j)
+            printf("%d ", graph->matrix[i][j]);
         printf("\n");
     }
 }

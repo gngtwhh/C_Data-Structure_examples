@@ -1,22 +1,22 @@
-#ifndef ADJACENTMATRIXH
-#define ADJACENTMATRIXH
+#ifndef ADJACENT_MATRIX_H
+#define ADJACENT_MATRIX_H
 
-typedef struct GraphMatrix {
-    int vertexNum;
-    int edgeNum;
-    int isWeighted; // 0 for unweighted graph, 1 for weighted graph
-    int **adjacentMatrix;
-} GraphMatrix;
+typedef struct graph_node_s {
+    int vertex_num;
+    int edge_num;
+    int weighted; // 0 for unweighted graph, 1 for weighted graph
+    int** matrix;
+} *graph_t;
 
 // Create a graph with n vertices and m edges
-GraphMatrix *createGraphMatrix(int n, int m,int isWeighted);
+graph_t create_graph(const int n, const int m, const int weighted);
 // Destroy a graph
-void destroyGraphMatrix(GraphMatrix *graph);
+void destroy_graph(graph_t *graph);
 // Add an edge to the graph
-void addEdgeMatrix(GraphMatrix *graph, int u, int v, int w);
+void add_edge(graph_t graph, const int u, const int v, const int w);
 // Remove an edge from the graph
-void removeEdgeMatrix(GraphMatrix *graph, int u, int v);
+void remove_edge(graph_t graph, const int u, const int v) ;
 // Print the graph
-void printGraphMatrix(GraphMatrix *graph);
+void print_graph(graph_t graph);
 
-#endif //ADJACENTMATRIXH
+#endif //ADJACENT_MATRIX_H
