@@ -33,7 +33,9 @@ graph_t create_graph(const int n, const int m, const int weighted) {
 
 // Destroy a graph
 void destroy_graph(graph_t *graph) {
+    if (*graph == NULL) return;
     graph_t g = *graph;
+    if (g == NULL) return;
     for (int i = 1; i <= g->vertex_num; ++i)
         free(g->matrix[i]);
     free(g->matrix);

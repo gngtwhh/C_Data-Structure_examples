@@ -3,21 +3,21 @@
 
 int main() {
     int data[4] = {1, 2, 3, 4};
-    QueuePtr queue = make_queue();
+    queue_t queue = new_queue();
     for (int i = 0; i < 4; ++i) {
         push_queue(queue, data[i]);
     }
-    printf("current len of queue is %d\n", Queue_length(queue));
+    printf("current len of queue is %d\n", queue_length(queue));
     printf("current front of queue is %d\n", front_queue(queue));
 
     for (int i = 0; i < 3; ++i) {
         printf("pop\n");
-        pop_queue(queue, VOID_PTR);
+        pop_queue(queue, NULL);
         printf("current front of queue is %d\n", front_queue(queue));
     }
-    printf("current len of queue is %d\n", Queue_length(queue));
+    printf("current len of queue is %d\n", queue_length(queue));
     push_queue(queue, 5);
-    QueueElemType e;
+    q_elem_type e;
     while (!is_empty_queue(queue)) {
         pop_queue(queue, &e);
         printf("%d ", e);
@@ -31,9 +31,9 @@ int main() {
         pop_queue(queue, &e);
         printf("%d ", e);
     }
-    printf("\ncurrent len of queue is %d\n", Queue_length(queue));
+    printf("\ncurrent len of queue is %d\n", queue_length(queue));
 
     printf("destroy_queue\n");
-    destroy_queue(queue);
+    destroy_queue(&queue);
     return 0;
 }

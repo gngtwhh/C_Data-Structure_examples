@@ -7,9 +7,9 @@
 #include "ArrCircularQueue.h"
 
 // make and destroy
-QueuePtr make_queue(void) {
-    QueuePtr new_queue = NULL;
-    new_queue = (QueuePtr) malloc(sizeof(Queue));
+queue_t new_queue(void) {
+    queue_t new_queue = NULL;
+    new_queue = (queue_t) malloc(sizeof(queue_obj_t));
     if (NULL == new_queue) {
         printf("error in malloc!new_queue malloc failed!\n");
         exit(-1);
@@ -20,23 +20,27 @@ QueuePtr make_queue(void) {
     return new_queue;
 }
 
-bool destroy_queue(QueuePtr Q) {
-    clear_queue(Q);
-    free(Q);
+bool destroy_queue(queue_t *Q) {
+    if (NULL == Q) return false;
+    queue_t temp = *Q;
+    if (NULL == temp) return false;
+    clear_queue(temp);
+    free(temp);
+    *Q = NULL;
     return true;
 }
 
 // check status
-bool is_empty_queue(QueuePtr Q) {
+bool is_empty_queue(queue_t Q) {
     return Q->front == Q->rear ? true : false;
 }
 
-int Queue_length(QueuePtr Q) {
+int queue_length(queue_t Q) {
     return Q->length;
 }
 
 //operations
-bool push_queue(QueuePtr Q, QueueElemType e) {
+bool push_queue(queue_t Q, q_elem_type e) {
     if (Q->length == QUEUE_SIZE) {
         printf("error in push_queue()!the queue is full!\n");
         return false;
@@ -47,7 +51,7 @@ bool push_queue(QueuePtr Q, QueueElemType e) {
     return true;
 }
 
-bool pop_queue(QueuePtr Q, QueueElemType *e) {
+bool pop_queue(queue_t Q, q_elem_type *e) {
     if (is_empty_queue(Q)) {
         printf("error in pop_queue()!the queue is empty!\n");
         return false;
@@ -60,7 +64,7 @@ bool pop_queue(QueuePtr Q, QueueElemType *e) {
     return true;
 }
 
-QueueElemType front_queue(QueuePtr Q) {
+q_elem_type front_queue(queue_t Q) {
     if (is_empty_queue(Q)) {
         printf("error in front_queue()!the queue is empty!\n");
         exit(-1);
@@ -68,7 +72,7 @@ QueueElemType front_queue(QueuePtr Q) {
     return Q->data[Q->front];
 }
 
-QueueElemType back_queue(QueuePtr Q) {
+q_elem_type back_queue(queue_t Q) {
     if (is_empty_queue(Q)) {
         printf("error in back_queue()!the queue is empty!\n");
         exit(-1);
@@ -79,7 +83,7 @@ QueueElemType back_queue(QueuePtr Q) {
     return Q->data[(Q->rear - 1 + QUEUE_SIZE + 1) % (QUEUE_SIZE + 1)];
 }
 
-bool clear_queue(QueuePtr Q){
+bool clear_queue(queue_t Q){
     Q->front = Q->rear = Q->length = 0;
     return true;
 }
